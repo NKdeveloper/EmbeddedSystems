@@ -1,0 +1,85 @@
+/*
+ * Transiton Light
+ * @author Nikhil Kanamarla
+ *
+ * Press a button and twist potentiometer to change color
+ */
+// LED leads connected to PWM pins
+
+const  int ledPin1 = 9; // red
+const  int ledPin2 = 10; //green
+const int ledPin3 = 11; //blue
+
+
+int inputPin = 2; // choose the input pin (for a pushbutton)
+int val = 0; // variable for reading the pin status
+int sensorPin = A0; // the analog pin for the potentiometer
+int sensorValue = 0; // the value from the potentiometer
+
+void setup() {
+  // displays output
+  Serial.begin(9600);
+
+  pinMode(inputPin, INPUT); // declare pushbutton as input
+  pinMode(sensorPin, INPUT); // declare sensor as input
+  pinMode(ledPin1, OUTPUT); // declares various pins for color output on led
+  pinMode(ledPin2, OUTPUT);
+  pinMode(ledPin3, OUTPUT);
+}
+
+void loop() {
+  val = digitalRead(inputPin); // read input value
+  if (val == HIGH) { // check if the input is HIGH
+    digitalWrite(ledPin1, LOW); // turn LED OFF
+    digitalWrite(ledPin2, LOW);
+    digitalWrite(ledPin3, LOW);
+
+  } else {
+
+    // red value from sensor
+    sensorValue = analogRead(sensorPin);
+    // displays output
+    Serial.println(sensorValue);
+
+
+    // Display the requested color
+    // Displays red
+    if (sensorValue < 300 && sensorValue >= 0) {
+      digitalWrite(ledPin2, LOW);
+      digitalWrite(ledPin3, LOW);
+      digitalWrite(ledPin1, HIGH);
+    }
+    // displays red and green
+    else if (sensorValue > 300 && sensorValue < 320) {
+      digitalWrite(ledPin2, HIGH);
+      digitalWrite(ledPin3, LOW);
+      digitalWrite(ledPin1, HIGH);
+    }
+    // displays green
+    else if ( sensorValue < 600 && sensorValue > 321) {
+      digitalWrite(ledPin2, HIGH);
+      digitalWrite(ledPin3, LOW);
+      digitalWrite(ledPin1, LOW);
+    }
+    // displays green and blue
+    else if (sensorValue > 600 && sensorValue < 620) {
+      digitalWrite(ledPin2, HIGH);
+      digitalWrite(ledPin3, HIGH);
+      digitalWrite(ledPin1, LOW);
+    }
+    //displays green
+    else if (sensorValue < 1010 && sensorValue > 621) {
+      digitalWrite(ledPin2, LOW);
+      digitalWrite(ledPin3, HIGH);
+      digitalWrite(ledPin1, LOW);
+    }
+    //displays all colors 
+    else if (sensorValue > 1010 && sensorValue < 1020) {
+      digitalWrite(ledPin2, HIGH);
+      digitalWrite(ledPin3, HIGH);
+      digitalWrite(ledPin1, HIGH);
+    }
+
+  }
+}
+
